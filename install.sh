@@ -125,8 +125,8 @@ deploy_configs() {
     mkdir -p "$HOME/.config"
     
     # Копируем папки конфигов
-    if [ -d "$REPO_DIR/configs" ]; then
-        cp -r "$REPO_DIR/configs/"* "$HOME/.config/"
+    if [ -d "$REPO_DIR/config" ]; then
+        cp -r "$REPO_DIR/config/"* "$HOME/.config/"
     fi
 
     # Настройка скриптов
