@@ -14,12 +14,16 @@ run_check() {
 }
 
 verify_system() {
-    echo -e "\n${BOLD}🔍 ДИАГНОСТИКА СИСТЕМЫ:${RC}"
-    run_check "Sway" _check_pkg "sway"
+    print_banner
+    log "info" "Диагностика системы..."
+    echo "--------------------------------------------------"
+    run_check "Sway WM" _check_pkg "sway"
     run_check "Waybar" _check_pkg "waybar"
-    run_check "wlogout (AUR)" _check_pkg "wlogout"
+    run_check "wlogout" _check_pkg "wlogout"
     run_check "Fish Shell" _check_pkg "fish"
     run_check "Конфиг Sway" _check_file "sway/config"
     run_check "Конфиг Starship" _check_file "starship.toml"
-    echo -e "---------------------------------------\n"
+    echo "--------------------------------------------------"
+    echo -e "\nНажмите Enter для выхода в меню..."
+    read
 }

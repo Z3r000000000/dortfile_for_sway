@@ -6,32 +6,29 @@ export CL_RED='\033[0;31m'; export CL_MAGENTA='\033[0;35m'; export CL_YELLOW='\0
 export BOLD='\033[1m'; export RC='\033[0m'
 
 log() {
-    local level="$1"
-    local msg="$2"
+    local level="$1"; local msg="$2"
     case "$level" in
         "info")    echo -e "[${CL_BLUE}ℹ${RC}] $msg" ;;
         "success") echo -e "[${CL_GREEN}✔${RC}] $msg" ;;
-        "error")   echo -e "[${CL_RED}✘${RC}] $msg" ; echo "[ERROR] $msg" >> "$LOG_FILE" ; exit 1 ;;
+        "error")   echo -e "[${CL_RED}✘${RC}] $msg"; echo "[ERROR] $msg" >> "$LOG_FILE"; exit 1 ;;
         "warn")    echo -e "[${CL_YELLOW}⚠${RC}] $msg" ;;
     esac
     echo "[$(date +'%H:%M:%S')] [$level] $msg" >> "$LOG_FILE"
 }
 
-# Функция для запуска команд с перенаправлением вывода в лог
 run_cmd() {
-    local msg="$1"
-    local cmd="$2"
+    local msg="$1"; local cmd="$2"
     log "info" "$msg..."
     if eval "$cmd" >> "$LOG_FILE" 2>&1; then
         return 0
     else
-        log "warn" "Ошибка при: $msg. Проверьте install.log"
+        log "warn" "Ошибка: $msg. См. install.log"
         return 1
     fi
 }
 
 print_banner() {
     clear
-    echo -e "${CL_MAGENTA}${BOLD}🌌 TOKYO NIGHT SWAY : ARCH INSTALLER${RC}"
-    echo -e "${CL_BLUE}---------------------------------------${RC}\n"
+    echo -e "${CL_MAGENTA}${BOLD}🌌 TOKYO NIGHT SWAY : Ультимативный установщик${RC}"
+    echo -e "${CL_BLUE}--------------------------------------------------${RC}\n"
 }
