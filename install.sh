@@ -203,30 +203,45 @@ reset_stable() {
     fi
 }
 
+restore_system_configs() {
+    echo -e "${CYAN}[?] ВОССТАНОВЛЕНИЕ: Вернуть конфиги в системе к версии из репозитория?${RC}"
+    echo -e "${YELLOW}Ваши текущие настройки в ~/.config будут сохранены в бэкап.${RC}"
+    read -p "Продолжить? (y/n): " confirm
+    if [[ "$confirm" == "y" ]]; then
+        create_backup
+        deploy_configs
+        log "SUCCESS" "Конфиги восстановлены до стабильного состояния!"
+    fi
+}
+
+
+
 # --- ИНТЕРФЕЙС ---
 
+# --- МЕНЮ ---
 show_menu() {
     clear
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RC}"
-    echo -e "  ${BLUE}TOKYO NIGHT SWAY${RC} : Система управления дотфайлами"
+    echo -e "  ${BLUE}TOKYO NIGHT SWAY${RC} : Менеджер конфигурации"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RC}"
-    
     check_for_updates
 
     echo -e "\nВыберите действие:"
-    echo -e "${GREEN}1)${RC} Полноценная установка (База + Драйверы + Конфиги)"
-    echo -e "${YELLOW}2)${RC} Возврат к стабильной версии (Сброс + Бэкап)"
-    echo -e "${BLUE}3)${RC} Обновить только конфиги (Deploy)"
-    echo -e "${RED}4)${RC} Выход"
+    echo -e "${GREEN}1)${RC} Полноценная установка (Система + Пакеты + Конфиги)"
+    echo -e "${YELLOW}2)${RC} Восстановить конфиги в системе (из репозитория)"
+    echo -e "${BLUE}3)${RC} Сбросить репозиторий (до состояния GitHub)"
+    echo -e "${CYAN}4)${RC} Только обновить конфиги (Deploy)"
+    echo -e "${RED}5)${RC} Выход"
     echo -e ""
-    read -p "Введите номер [1-4]: " choice
+    read -p "Введите номер: " choice
 
     case $choice in
         1) full_install ;;
-        2) reset_stable ;;
-        3) create_backup && deploy_configs ;;
-        4) exit 0 ;;
-        *) log "ERROR" "Неверный ввод."; sleep 2; show_menu ;;
+        2) restore_system_configs ;;
+        3) reset_to_stable_repo ;;
+        4) create_backup && deploy_configs ;;
+        5) exit 0 ;;
+        *) log "ERROR" "Неверный ввод."; sleep 1; show_menu ;;
     esac
 }
 
